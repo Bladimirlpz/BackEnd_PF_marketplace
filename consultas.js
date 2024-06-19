@@ -1,7 +1,7 @@
 const { Pool } = require('pg')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-require('dotenv').config({ path: './.env'})
+require('dotenv').config({ path: './.env' })
 
 const pool = new Pool({
     host: process.env.HOST,
@@ -16,11 +16,11 @@ const obtenerProductos = async () => {
     const consulta = 'SELECT * FROM Productos'
     const value = []
     const { rowCount, rows } = await pool.query(consulta, value)
-    if (!rowCount){
+    if (!rowCount) {
         throw { code: 204, message: 'No existen productos' }
     } else {
         return rows
-      }
+    }
 }
 
 // Funcion para verificar usuario
@@ -31,13 +31,13 @@ const verificarUsuario = async (email, contraseña) => {
     const { contrasena: contraseñaEncriptada } = usuario
     const contraseñaCorrecta = bcrypt.compareSync(contraseña, contraseñaEncriptada)
     if (!contraseñaCorrecta || !rowCount) {
-        throw {code: 404, message:'No se encontro ningun usuario con estas credenciales'}
-      }
-      const token = jwt.sign({ email: usuario.email, nombre: usuario.nombre, apellido: usuario.apellido }, process.env.JWT_SECRET, { expiresIn: '10h' })
-      return token
-    }    
+        throw { code: 404, message: 'No se encontro ningun usuario con estas credenciales' }
+    }
+    const token = jwt.sign({ email: usuario.email, nombre: usuario.nombre, apellido: usuario.apellido }, process.env.JWT_SECRET, { expiresIn: '10h' })
+    return token
+}
 
-// Registrar usuario
+// Funcion para Registrar usuario
 const registrarUsuario = async (usuario) => {
     let { nombre, apellido, email, contraseña } = usuario
     const contraseñaEncriptada = bcrypt.hashSync(contraseña)
@@ -47,4 +47,33 @@ const registrarUsuario = async (usuario) => {
     await pool.query(consulta, values)
 }
 
-module.exports = {obtenerProductos, verificarUsuario, registrarUsuario}
+// Funcion para Publicar Producto
+const publicarProducto = async (producto) => {
+    let { nombre, descripcion, precio, stock, imagen, categoria } = producto
+    const values = [nombre, descripcion, precio, stock, imagen, categoria]
+    const consulta = 'INSERT INTO Productos values (DEFAULT, $1, $2, $3, $4, $5, $6)'
+    await pool.query(consulta, values)
+}
+
+// Funcion para Contacto usuarios
+const contactoUsuario = async (contacto) => {
+    let { nombre, email, mensaje } = producto
+    const values = [nombre, email, mensaje]
+    const consulta = 'INSERT INTO Contactos values (DEFAULT, $1, $2, $3)'
+    await pool.query(consulta, values)
+}
+
+// Funcion para traer los productos publicados por usuario especifico
+const productosPublicado = async (usuario) => {
+    let { id } = usuario
+    const values = [id]
+    const consulta = 'SELECT p.id, p.nombre_producto, p.descripcion, p.precio, p.imagen, p.categoria FROM Productos p JOIN Usuarios u ON p.usuario_id = u.id WHERE u.id = $1;'
+    const { rowCount, rows } = await pool.query(consulta, values)
+    if (!rowCount) {
+        throw { code: 204, message: 'No existen productos' }
+    } else {
+        return rows
+    }
+}
+
+module.exports = { obtenerProductos, verificarUsuario, registrarUsuario, publicarProducto, contactoUsuario, productosPublicado }
