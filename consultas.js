@@ -31,10 +31,10 @@ const verificarUsuario = async (email, contraseña) => {
     const { contrasena: contraseñaEncriptada } = usuario
     const contraseñaCorrecta = bcrypt.compareSync(contraseña, contraseñaEncriptada)
     if (!contraseñaCorrecta || !rowCount) {
-        throw { code: 404, message: 'No se encontro ningun usuario con estas credenciales' }
+        throw new Error('Contraseña incorrecta')
     }
-    const token = jwt.sign({ email: usuario.email, nombre: usuario.nombre, apellido: usuario.apellido }, process.env.JWT_SECRET, { expiresIn: '10h' })
-    return token
+    const token = jwt.sign({ email: usuario.email, nombre: usuario.nombre, apellido: usuario.apellido, id: usuario.id}, process.env.JWT_SECRET, { expiresIn: '10h' })
+    return token 
 }
 
 // Funcion para Registrar usuario
@@ -76,4 +76,13 @@ const productosPublicado = async (usuario) => {
     }
 }
 
-module.exports = { obtenerProductos, verificarUsuario, registrarUsuario, publicarProducto, contactoUsuario, productosPublicado }
+// Funcion para obtener datos de  usuario
+const obtenerUsuario = async (email) => {
+    const value = [email]
+    console.log(value)
+    const consulta = 'SELECT * FROM Usuarios WHERE email = $1;'
+    const { rows } = await pool.query(consulta, value)
+    return rows 
+}
+
+module.exports = { obtenerProductos, verificarUsuario, registrarUsuario, publicarProducto, contactoUsuario, productosPublicado, obtenerUsuario }
