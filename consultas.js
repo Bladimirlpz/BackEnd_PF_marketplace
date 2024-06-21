@@ -65,8 +65,7 @@ const contactoUsuario = async (contacto) => {
 }
 
 // Funcion para traer los productos publicados por usuario especifico
-const productosPublicado = async (usuario) => {
-    let { id } = usuario
+const productosPublicado = async (id) => {
     const values = [id]
     const consulta = 'SELECT p.id, p.nombre_producto, p.descripcion, p.precio, p.imagen, p.categoria FROM Productos p JOIN Usuarios u ON p.usuario_id = u.id WHERE u.id = $1;'
     const { rowCount, rows } = await pool.query(consulta, values)
