@@ -49,9 +49,10 @@ const registrarUsuario = async (usuario) => {
 
 // Funcion para Publicar Producto
 const publicarProducto = async (producto) => {
-    let { nombre, descripcion, precio, stock, imagen, categoria } = producto
-    const values = [nombre, descripcion, precio, stock, imagen, categoria]
-    const consulta = 'INSERT INTO Productos values (DEFAULT, $1, $2, $3, $4, $5, $6)'
+    let { nombre, descripcion, precio, stock, imagen, categoria, id  } = producto
+    const usuario_id = id
+    const values = [nombre, descripcion, precio, stock, imagen, categoria, usuario_id]
+    const consulta = 'INSERT INTO Productos values (DEFAULT, $1, $2, $3, $4, $5, $6, $7);'
     await pool.query(consulta, values)
 }
 
