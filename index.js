@@ -30,20 +30,20 @@ app.get("/", async (req, res) => {
 
 // Get para obtener datos del usuario de la base de datos
 app.get("/usuario", authMiddleware, async (req, res) => {
-    try {
-        const authorization = req.headers.authorization.split(' ')
-        const token = authorization[1]
-        const { email } = jwt.verify(token, process.env.JWT_SECRET)
-        const respuesta = await obtenerUsuario(email)
-        res.status(201).json([{
-          id: respuesta[0].id,
-          email: respuesta[0].email,
-          nombre: respuesta[0].nombre,
-          apellido: respuesta[0].apellido
-        }])
-      } catch (error) {
-        res.status(500).send({ message: 'Datos no encontrados' })
-      }
+  try {
+    const authorization = req.headers.authorization.split(' ')
+    const token = authorization[1]
+    const { email } = jwt.verify(token, process.env.JWT_SECRET)
+    const respuesta = await obtenerUsuario(email)
+    res.status(201).json([{
+      id: respuesta[0].id,
+      email: respuesta[0].email,
+      nombre: respuesta[0].nombre,
+      apellido: respuesta[0].apellido
+    }])
+  } catch (error) {
+    res.status(500).send({ message: 'Datos no encontrados' })
+  }
 });
 
 // Post para login usuario
@@ -96,8 +96,10 @@ app.post("/contacto", async (req, res) => {
 // Get para obtener todos los productos publicados por un usuario en especifico
 app.get("/mis-publicaciones", authMiddleware, async (req, res) => {
   try {
-    const usuario = req.body;
-    const productos = await productosPublicado(usuario);
+    const authorization = req.headers.authorization.split(' ')
+    const token = authorization[1]
+    const { id } = jwt.verify(token, process.env.JWT_SECRET)
+    const productos = await productosPublicado(id);
     res.json(productos);
   } catch (error) {
     res.status(204).send("Productos no encontrados");
