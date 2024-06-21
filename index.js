@@ -39,7 +39,7 @@ app.get("/usuario", authMiddleware, async (req, res) => {
           id: respuesta[0].id,
           email: respuesta[0].email,
           nombre: respuesta[0].nombre,
-          message: 'Bienvenido'
+          apellido: respuesta[0].apellido
         }])
       } catch (error) {
         res.status(500).send({ message: 'Datos no encontrados' })
@@ -94,7 +94,7 @@ app.post("/contacto", async (req, res) => {
 });
 
 // Get para obtener todos los productos publicados por un usuario en especifico
-app.get("/mis-publicaciones", async (req, res) => {
+app.get("/mis-publicaciones", authMiddleware, async (req, res) => {
   try {
     const usuario = req.body;
     const productos = await productosPublicado(usuario);
