@@ -67,7 +67,7 @@ app.post("/registrarse", async (req, res) => {
     await registrarUsuario(usuario);
     res.status(201).json({ message: "Usuario registrado con exito" });
   } catch (error) {
-    res.status(401).json({ message: "Usuario no registrado" });
+    res.status(401).json({ message: "Email ya registrado" });
   }
 });
 
