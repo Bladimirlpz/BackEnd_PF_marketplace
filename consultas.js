@@ -79,7 +79,6 @@ const productosPublicado = async (usuario) => {
 // Funcion para obtener datos de  usuario
 const obtenerUsuario = async (email) => {
     const value = [email]
-    console.log(value)
     const consulta = 'SELECT * FROM Usuarios WHERE email = $1;'
     const { rows } = await pool.query(consulta, value)
     return rows 
