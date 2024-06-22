@@ -78,6 +78,4 @@ ALTER TABLE Productos
 ADD COLUMN usuario_id INT,
 ADD FOREIGN KEY (usuario_id) REFERENCES Usuarios(id);
 
-UPDATE Productos
-SET usuario_id = '1'
-WHERE id = '5';
+
