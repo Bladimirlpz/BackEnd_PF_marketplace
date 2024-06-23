@@ -24,7 +24,7 @@ CREATE TABLE Productos (
     imagen VARCHAR(255),
     categoria VARCHAR(50),
     usuario_id INT,
-    FOREIGN KEY (usuario_id) REFERENCES Usuarios(id);
+    FOREIGN KEY (usuario_id) REFERENCES Usuarios(id)
 );
 
 
