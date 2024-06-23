@@ -2,7 +2,6 @@ const request = require("supertest");
 const app = require("../index");
 
 describe("Operaciones marketplace", () => {
-
   it("Obtener Productos", async () => {
     const { statusCode } = await request(app).get("/").send();
     expect(statusCode).toBe(200);
@@ -19,7 +18,39 @@ describe("Operaciones marketplace", () => {
       .send(element);
     expect(response.statusCode).toBe(200);
   });
-  
 
+
+  it("Registro de usuario con éxito", async () => {
+    const newUser = {
+      email: "nuevo@usuario.com",
+      password: "nuevapassword",
+      rol: "user",
+      lenguage: "es",
+    };
+    const response = await request(app).post("/registrarse").send(newUser);
+    expect(response.statusCode).toBe(201);
+    expect(response.body.message).toBe("Usuario registrado con exito");
+  });
+
+  it("Intento de registro con email ya registrado", async () => {
+    const newUser = {
+      email: "juan@example.com",
+      password: "1234",
+      rol: "user",
+      lenguage: "es"
+    };
+    const response = await request(app).post("/registrarse").send(newUser);
+    expect(response.statusCode).toBe(401);
+    expect(response.body.message).toBe("Email ya registrado");
+  });
+
+  it("Login con credenciales incorrectas", async () => {
+    const loginData = {
+      email: "juan@example.com",
+      contraseña: "wrongpassword"
+    };
+    const response = await request(app).post("/login").send(loginData);
+    expect(response.statusCode).toBe(401);
+  });
 
 });
