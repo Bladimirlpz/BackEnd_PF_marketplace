@@ -76,12 +76,12 @@ const publicarProducto = async (producto) => {
 
 // Funcion para Contacto usuarios
 const contactoUsuario = async (producto) => {
-    let { nombre, email, mensaje } = producto;
-    const values = [nombre, email, mensaje];
-    const consulta = "INSERT INTO contactos (nombre, email, mensaje) VALUES ($1, $2, $3);";
-    const result = await pool.query(consulta, values);
-    return result;
-  };
+  let { nombre, email, mensaje } = producto;
+  const values = [nombre, email, mensaje];
+  const consulta = "INSERT INTO contactos (nombre, email, mensaje) VALUES ($1, $2, $3);";
+  const result = await pool.query(consulta, values);
+  return result;
+};
 
 // Funcion para traer los productos publicados por usuario especifico
 const productosPublicado = async (id) => {
