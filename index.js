@@ -56,7 +56,7 @@ app.post("/login", async (req, res) => {
     const { email, contraseña } = req.body;
     const token = await verificarUsuario(email, contraseña);
     res.status(201).json({
-      message: "Usuario encontrado",
+      message: "Usuario encontrado", token
     });
   } catch (error) {
     res.status(401).json({ message: "Usuario no encontrado" });
@@ -110,19 +110,17 @@ app.get("/mis-publicaciones", authMiddleware, async (req, res) => {
 });
 
 //Ruta POST para ingresar pedido del carrito
-app.post("/carrito"),
-  authMiddleware,
-  async (req, res) => {
+app.post("/carrito", authMiddleware, async (req, res) => {
     try {
       const authorization = req.headers.authorization.split(" ");
       const token = authorization[1];
       const { id } = jwt.verify(token, process.env.JWT_SECRET);
-      const pedido = req.body;
-      await registrarPedido(pedido, id);
+      const pedidos = req.body;
+      await registrarPedido(pedidos, id);
       res.status(201).json({ message: "Pedido Registrado con exito" });
     } catch (error) {
       res.status(404).send("Productos no encontrados");
     }
-  };
+  });
 
 module.exports = app;
