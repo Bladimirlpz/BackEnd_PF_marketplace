@@ -12,17 +12,7 @@ const {
 const { authMiddleware } = require("./middlewares/auth.middleware");
 const jwt = require("jsonwebtoken");
 const app = express();
-
-const { Pool } = require("pg");
-require("dotenv").config();
-
-const pool = new Pool({
-  user: process.env.USER,
-  host: process.env.HOST,
-  database: process.env.DATABASE,
-  password: process.env.PASSWORD,
-  allowExitOnIdle: true,
-});
+require("dotenv").config({ path: "./.env" });
 
 app.use(cors());
 app.use(express.json());
