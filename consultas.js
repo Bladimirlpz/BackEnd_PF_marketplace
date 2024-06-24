@@ -13,8 +13,14 @@ const pool = new Pool({
 
 // Funcion para traer todos los productos
 const obtenerProductos = async () => {
-  const { rows } = "SELECT * FROM productos;";
-  return rows;
+    const consulta = 'SELECT * FROM Productos;'
+    const value = []
+    const { rowCount, rows } = await pool.query(consulta, value)
+    if (!rowCount) {
+        throw { code: 204, message: 'No existen productos' }
+    } else {
+        return rows
+    }
 };
 
 // Funcion para verificar usuario
