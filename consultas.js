@@ -13,14 +13,14 @@ const pool = new Pool({
 
 // Funcion para traer todos los productos
 const obtenerProductos = async () => {
-    const consulta = 'SELECT * FROM Productos;'
-    const value = []
-    const { rowCount, rows } = await pool.query(consulta, value)
-    if (!rowCount) {
-        throw { code: 204, message: 'No existen productos' }
-    } else {
-        return rows
-    }
+  const consulta = "SELECT * FROM Productos;";
+  const value = [];
+  const { rowCount, rows } = await pool.query(consulta, value);
+  if (!rowCount) {
+    throw { code: 204, message: "No existen productos" };
+  } else {
+    return rows;
+  }
 };
 
 // Funcion para verificar usuario
@@ -84,7 +84,8 @@ const publicarProducto = async (producto) => {
 const contactoUsuario = async (producto) => {
   let { nombre, email, mensaje } = producto;
   const values = [nombre, email, mensaje];
-  const consulta = "INSERT INTO contactos (nombre, email, mensaje) VALUES ($1, $2, $3);";
+  const consulta =
+    "INSERT INTO contactos (nombre, email, mensaje) VALUES ($1, $2, $3);";
   await pool.query(consulta, values);
 };
 
@@ -109,6 +110,14 @@ const obtenerUsuario = async (email) => {
   return rows;
 };
 
+// Funcion para registrar pedido del carrito
+const registrarPedido = async (pedido, id) => { //En desarrollo
+  const usuario_id = id;
+  const values = [usuario_id, pedido];
+  const consulta =
+    "WITH datos_pedido AS (SELECT jsonb_array_elements(pedido::JSONB) AS detalle)INSERT INTO pedidos (usuario_id, nombre_producto, precio, imagen, cantidad) SELECT $1 AS usuario_id, detalle->>$2 AS nombre_producto, (detalle->>$3)::INT AS precio, COALESCE(detalle->>$4, '') AS imagen, (detalle->>$5)::INT AS cantidad FROM datos_pedido;";
+};
+
 module.exports = {
   obtenerProductos,
   verificarUsuario,
@@ -117,4 +126,5 @@ module.exports = {
   contactoUsuario,
   productosPublicado,
   obtenerUsuario,
+  registrarPedido,
 };
