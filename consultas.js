@@ -118,10 +118,9 @@ const registrarPedido = async (pedidos, id) => { //En desarrollo
   const { rows: carrito } = await pool.query(consulta, value);
   const carrito_id = carrito[0].id
   for (const pedido of pedidos) {
-    console.log(carrito_id)
     const { id, cantidad } = pedido
     const values = [carrito_id, id, cantidad]
-    consulta =  'INSERT INTO productos_en_carrito (carrito_id, producto_id, cantidad) VALUES ($1, $2, $3)'
+    const consulta =  'INSERT INTO productos_en_carrito (carrito_id, producto_id, cantidad) VALUES ($1, $2, $3)'
     await pool.query(consulta, values)
   }
 
