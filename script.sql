@@ -29,22 +29,21 @@ CREATE TABLE Productos (
 
 
 -- Creación de la tabla Carrito
-CREATE TABLE Carrito (
+CREATE TABLE carrito (
     id SERIAL PRIMARY KEY,
     usuario_id INT NOT NULL,
-    total INT NOT NULL,
+    fecha_creacion DATE NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(id)
 );
 
 -- Creación de la tabla Detalles del Carrito
-CREATE TABLE pedido (
-    id SERIAL PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    nombre_producto VARCHAR(100) NOT NULL,
-    precio INT NOT NULL,
-    imagen VARCHAR(255),
-    cantidad INT NOT NULL,
-    FOREIGN KEY (usuario_id) REFERENCES Usuarios(id)
+CREATE TABLE productos_en_carrito (
+    carrito_id INT,
+    producto_id INT,
+    cantidad INT,
+    PRIMARY KEY (carrito_id, producto_id),
+    FOREIGN KEY (carrito_id) REFERENCES carritos(id),
+    FOREIGN KEY (producto_id) REFERENCES productos(id)
 );
 
 -- Creacion de la tabla para contactos
