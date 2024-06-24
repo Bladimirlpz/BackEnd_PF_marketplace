@@ -37,14 +37,14 @@ CREATE TABLE Carrito (
 );
 
 -- Creación de la tabla Detalles del Carrito
-CREATE TABLE DetallesCarrito (
+CREATE TABLE pedido (
     id SERIAL PRIMARY KEY,
-    carrito_id INT NOT NULL,
+    usuario_id INT NOT NULL,
     nombre_producto VARCHAR(100) NOT NULL,
     precio INT NOT NULL,
     imagen VARCHAR(255),
     cantidad INT NOT NULL,
-    FOREIGN KEY (carrito_id) REFERENCES Carrito(id)
+    FOREIGN KEY (usuario_id) REFERENCES Usuarios(id)
 );
 
 -- Creacion de la tabla para contactos
@@ -74,8 +74,6 @@ VALUES ('TV Samsung 85"', 'televisor Samsung 2024 de 85" UHD ', 599990, 5, 'http
 INSERT INTO Usuarios (nombre, apellido, email, contrasena)
 VALUES ('Juan', 'Pérez', 'juan@example.com', '1234');
 
-ALTER TABLE Productos
-ADD COLUMN usuario_id INT,
-ADD FOREIGN KEY (usuario_id) REFERENCES Usuarios(id);
+
 
 
