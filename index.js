@@ -23,7 +23,7 @@ app.listen(3000, console.log("Servidor activo"));
 app.get("/", async (req, res) => {
   try {
     const productos = await obtenerProductos();
-    res.json(productos);
+    res.status(201).json(productos);
   } catch (error) {
     res.status(204).send("Productos no encontrados");
   }
@@ -54,9 +54,8 @@ app.post("/login", async (req, res) => {
   try {
     const { email, contraseña } = req.body;
     const token = await verificarUsuario(email, contraseña);
-    res.status(200).json({
+    res.status(201).json({
       message: "Usuario encontrado",
-      token,
     });
   } catch (error) {
     res.status(401).json({ message: "Usuario no encontrado" });
@@ -90,10 +89,9 @@ app.post("/contacto", async (req, res) => {
   try {
     const contacto = req.body;
     await contactoUsuario(contacto);
-    res.status(200).send("Formulario enviado con éxito");
+    res.status(201).send({message: "Datos de contacto registrado con exito"});
   } catch (error) {
-    console.error("Error en el envío del formulario:", error);
-    res.status(401).json({ message: "Error en el envío del formulario" });
+    res.status(401).json({message: "No se regristo el contacto"} );
   }
 });
 
@@ -104,10 +102,12 @@ app.get("/mis-publicaciones", authMiddleware, async (req, res) => {
     const token = authorization[1];
     const { id } = jwt.verify(token, process.env.JWT_SECRET);
     const productos = await productosPublicado(id);
-    res.status(200).json(productos);
+    res.status(201).json(productos);
   } catch (error) {
-    res.status(204).send("Productos no encontrados");
+    res.status(404).send("Productos no encontrados");
   }
 });
+
+
 
 module.exports = app;
