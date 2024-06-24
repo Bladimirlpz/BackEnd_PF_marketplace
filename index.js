@@ -8,6 +8,7 @@ const {
   contactoUsuario,
   productosPublicado,
   obtenerUsuario,
+  registrarPedido,
 } = require("./consultas");
 const { authMiddleware } = require("./middlewares/auth.middleware");
 const jwt = require("jsonwebtoken");
@@ -19,7 +20,7 @@ app.use(express.json());
 
 app.listen(3000, console.log("Servidor activo"));
 
-// Get para obtener todos los productos de la base de datos
+// Ruta GET para obtener todos los productos de la base de datos
 app.get("/", async (req, res) => {
   try {
     const productos = await obtenerProductos();
@@ -29,7 +30,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-// Get para obtener datos del usuario de la base de datos
+// Ruta GET para obtener datos del usuario de la base de datos
 app.get("/usuario", authMiddleware, async (req, res) => {
   try {
     const authorization = req.headers.authorization.split(" ");
@@ -49,7 +50,7 @@ app.get("/usuario", authMiddleware, async (req, res) => {
   }
 });
 
-// Post para login usuario
+// Ruta POST para login usuario
 app.post("/login", async (req, res) => {
   try {
     const { email, contraseña } = req.body;
@@ -62,7 +63,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// Post para registrar usuario
+// Ruta POST para registrar usuario
 app.post("/registrarse", async (req, res) => {
   try {
     const usuario = req.body;
@@ -73,7 +74,7 @@ app.post("/registrarse", async (req, res) => {
   }
 });
 
-// Post para publicar productos
+// Ruta POST para publicar productos
 app.post("/publicar", authMiddleware, async (req, res) => {
   try {
     const producto = req.body;
@@ -84,18 +85,18 @@ app.post("/publicar", authMiddleware, async (req, res) => {
   }
 });
 
-// Post para contactos
+// Ruta POST para ingresar contactos
 app.post("/contacto", async (req, res) => {
   try {
     const contacto = req.body;
     await contactoUsuario(contacto);
-    res.status(201).send({message: "Datos de contacto registrado con exito"});
+    res.status(201).send({ message: "Datos de contacto registrado con exito" });
   } catch (error) {
-    res.status(401).json({message: "No se regristo el contacto"} );
+    res.status(401).json({ message: "No se regristo el contacto" });
   }
 });
 
-// Get para obtener todos los productos publicados por un usuario en especifico
+// Ruta GET para obtener todos los productos publicados por un usuario en especifico
 app.get("/mis-publicaciones", authMiddleware, async (req, res) => {
   try {
     const authorization = req.headers.authorization.split(" ");
@@ -108,6 +109,20 @@ app.get("/mis-publicaciones", authMiddleware, async (req, res) => {
   }
 });
 
-
+//Ruta POST para ingresar pedido del carrito
+app.post("/carrito"),
+  authMiddleware,
+  async (req, res) => {
+    try {
+      const authorization = req.headers.authorization.split(" ");
+      const token = authorization[1];
+      const { id } = jwt.verify(token, process.env.JWT_SECRET);
+      const pedido = req.body;
+      await registrarPedido(pedido, id);
+      res.status(201).json({ message: "Pedido Registrado con exito" });
+    } catch (error) {
+      res.status(404).send("Productos no encontrados");
+    }
+  };
 
 module.exports = app;
