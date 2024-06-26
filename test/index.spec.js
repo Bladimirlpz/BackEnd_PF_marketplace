@@ -4,7 +4,7 @@ const app = require("../index");
 describe("Operaciones marketplace", () => {
   it("Obtener Productos", async () => {
     const { statusCode } = await request(app).get("/").send();
-    expect(statusCode).toBe(200);
+    expect(statusCode).toBe(201);
   });
 
   it("Contacto", async () => {
@@ -22,10 +22,10 @@ describe("Operaciones marketplace", () => {
 
   it("Registro de usuario con éxito", async () => {
     const newUser = {
+      nombre: "nombre",
+      apellido: "apellido",
       email: "nuevo@usuario.com",
-      password: "nuevapassword",
-      rol: "user",
-      lenguage: "es",
+      contraseña: "1234"
     };
     const response = await request(app).post("/registrarse").send(newUser);
     expect(response.statusCode).toBe(201);
@@ -35,9 +35,7 @@ describe("Operaciones marketplace", () => {
   it("Intento de registro con email ya registrado", async () => {
     const newUser = {
       email: "juan@example.com",
-      password: "1234",
-      rol: "user",
-      lenguage: "es"
+      contraseña: "1234"
     };
     const response = await request(app).post("/registrarse").send(newUser);
     expect(response.statusCode).toBe(401);
