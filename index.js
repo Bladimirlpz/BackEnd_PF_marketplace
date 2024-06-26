@@ -88,7 +88,7 @@ app.post("/contacto", async (req, res) => {
   try {
     const contacto = req.body;
     await contactoUsuario(contacto);
-    res.status(201).send({ message: "Datos de contacto registrado con exito" });
+    res.status(200).send({ message: "Datos de contacto registrado con exito" });
   } catch (error) {
     res.status(401).json({ message: "No se regristo el contacto" });
   }
