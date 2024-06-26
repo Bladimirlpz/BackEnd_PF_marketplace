@@ -33,16 +33,14 @@ app.get("/", async (req, res) => {
 // Ruta GET para obtener datos del usuario de la base de datos
 app.get("/usuario", authMiddleware, async (req, res) => {
   try {
-    const { email } = req.user
+    const { email } = req.user;
     const respuesta = await obtenerUsuario(email);
-    res.status(201).json(
-      {
-        id: respuesta[0].id,
-        email: respuesta[0].email,
-        nombre: respuesta[0].nombre,
-        apellido: respuesta[0].apellido,
-      },
-    );
+    res.status(201).json({
+      id: respuesta[0].id,
+      email: respuesta[0].email,
+      nombre: respuesta[0].nombre,
+      apellido: respuesta[0].apellido,
+    });
   } catch (error) {
     res.status(500).send({ message: "Datos no encontrados" });
   }
@@ -54,7 +52,8 @@ app.post("/login", async (req, res) => {
     const { email, contraseña } = req.body;
     const token = await verificarUsuario(email, contraseña);
     res.status(201).json({
-      message: "Usuario encontrado", token
+      message: "Usuario encontrado",
+      token,
     });
   } catch (error) {
     res.status(401).json({ message: "Usuario no encontrado" });
@@ -97,7 +96,7 @@ app.post("/contacto", async (req, res) => {
 // Ruta GET para obtener todos los productos publicados por un usuario en especifico
 app.get("/mis-publicaciones", authMiddleware, async (req, res) => {
   try {
-    const { id } = req.user
+    const { id } = req.user;
     const productos = await productosPublicado(id);
     res.status(201).json(productos);
   } catch (error) {
@@ -107,14 +106,14 @@ app.get("/mis-publicaciones", authMiddleware, async (req, res) => {
 
 //Ruta POST para ingresar pedido del carrito
 app.post("/carrito", authMiddleware, async (req, res) => {
-    try {
-      const { id } = req.user
-      const pedidos = req.body;
-      await registrarPedido(pedidos, id);
-      res.status(201).json({ message: "Pedido Registrado con exito" });
-    } catch (error) {
-      res.status(404).send("Productos no encontrados");
-    }
-  });
+  try {
+    const { id } = req.user;
+    const pedidos = req.body;
+    await registrarPedido(pedidos, id);
+    res.status(201).json({ message: "Pedido Registrado con exito" });
+  } catch (error) {
+    res.status(404).send("Productos no encontrados");
+  }
+});
 
 module.exports = app;

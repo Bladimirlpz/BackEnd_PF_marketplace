@@ -111,20 +111,21 @@ const obtenerUsuario = async (email) => {
 };
 
 // Funcion para registrar pedido del carrito
-const registrarPedido = async (pedidos, id) => { //En desarrollo
+const registrarPedido = async (pedidos, id) => {
   const usuario_id = id;
-  const value = [usuario_id]
-  const consulta = 'INSERT INTO carrito (usuario_id, fecha_creacion) VALUES ($1, CURRENT_DATE) RETURNING id'
+  const value = [usuario_id];
+  const consulta =
+    "INSERT INTO carrito (usuario_id, fecha_creacion) VALUES ($1, CURRENT_DATE) RETURNING id";
   const { rows: carrito } = await pool.query(consulta, value);
-  const carrito_id = carrito[0].id
+  const carrito_id = carrito[0].id;
   for (const pedido of pedidos) {
-    const { id, cantidad } = pedido
-    const values = [carrito_id, id, cantidad]
-    const consulta =  'INSERT INTO productos_en_carrito (carrito_id, producto_id, cantidad) VALUES ($1, $2, $3)'
-    await pool.query(consulta, values)
+    const { id, cantidad } = pedido;
+    const values = [carrito_id, id, cantidad];
+    const consulta =
+      "INSERT INTO productos_en_carrito (carrito_id, producto_id, cantidad) VALUES ($1, $2, $3)";
+    await pool.query(consulta, values);
   }
-
-}
+};
 
 module.exports = {
   obtenerProductos,
