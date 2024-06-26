@@ -47,7 +47,7 @@ const verificarUsuario = async (email, contraseña) => {
       id: usuario.id,
     },
     process.env.JWT_SECRET,
-    { expiresIn: "10h" }
+    { expiresIn: "1h" }
   );
   return token;
 };
