@@ -51,4 +51,14 @@ describe("Operaciones marketplace", () => {
     expect(response.statusCode).toBe(401);
   });
 
+  it("Añadir al carrito", async () => {
+    const element = { usuario_id: 1, fecha_creacion: "2024-06-05" };
+    const response = await request(app)
+      .post("/carrito")
+      .send(element);
+
+    expect(response.statusCode).toBe(201);
+    expect(response.body).toMatchObject(element);
+  });
+
 });
