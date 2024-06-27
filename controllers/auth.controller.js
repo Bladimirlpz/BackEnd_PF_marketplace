@@ -1,4 +1,4 @@
-const { getUserByEmail, createUser } = require("../models/user.model");
+const { getUserByEmail, createUser } = require("../models/index.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
@@ -31,7 +31,7 @@ const registerUser = async (req, res) => {
   try {
     const user = req.body;
     await createUser(user);
-    res.status(201).json({ message: "Usuario registrado con éxito" });
+    res.status(201).json({ message: "Usuario registrado con exito" });
   } catch (error) {
     res.status(401).json({ message: "Email ya registrado" });
   }

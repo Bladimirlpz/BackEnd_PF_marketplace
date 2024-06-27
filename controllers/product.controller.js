@@ -1,4 +1,4 @@
-const { obtenerProductos, publicarProducto, productosPublicado } = require("../models/product.model");
+const { obtenerProductos, publicarProducto, productosPublicado } = require("../models/index.js");
 
 const getProducts = async (req, res) => {
   try {
@@ -13,7 +13,7 @@ const postProduct = async (req, res) => {
   try {
     const producto = req.body;
     await publicarProducto(producto);
-    res.status(201).json({ message: "Producto publicado con éxito" });
+    res.status(201).json({ message: "Producto publicado con exito" });
   } catch (error) {
     res.status(401).json({ message: "Producto no publicado error en ruta" });
   }

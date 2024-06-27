@@ -20,7 +20,7 @@ describe("Operaciones marketplace", () => {
   });
 
 
-  it("Registro de usuario con éxito", async () => {
+  it("Registro de usuario con exito", async () => {
     const newUser = {
       nombre: "nombre",
       apellido: "apellido",
