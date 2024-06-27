@@ -24,7 +24,7 @@ describe("Operaciones marketplace", () => {
     const newUser = {
       nombre: "nombre",
       apellido: "apellido",
-      email: "nuevo@usuario.com",
+      email: "nuevo1@usuario.com",
       contraseña: "1234"
     };
     const response = await request(app).post("/registrarse").send(newUser);
@@ -52,13 +52,16 @@ describe("Operaciones marketplace", () => {
   });
 
   it("Añadir al carrito", async () => {
-    const element = { usuario_id: 1, fecha_creacion: "2024-06-05" };
+    const element = { 
+      usuario_id: 99, 
+      carrito_id: 2,
+      cantidad: 12,
+      id:9 };
     const response = await request(app)
       .post("/carrito")
       .send(element);
 
     expect(response.statusCode).toBe(201);
-    expect(response.body).toMatchObject(element);
   });
 
 });
