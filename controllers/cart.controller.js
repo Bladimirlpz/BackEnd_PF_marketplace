@@ -7,7 +7,7 @@ const postCart = async (req, res) => {
     await registrarPedido(pedidos, id);
     res.status(201).json({ message: "Pedido Registrado con exito" });
   } catch (error) {
-    res.status(404).send("Productos no encontrados");
+    res.status(404).send("Error al realizar pedido");
   }
 };
 
