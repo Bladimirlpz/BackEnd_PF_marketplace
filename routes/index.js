@@ -14,7 +14,6 @@ router.post("/registrarse", registerUser);
 
 // Rutas de productos
 router.get("/", getProducts);
-router.get("/productos", getProducts);
 router.post("/publicar", authMiddleware, postProduct);
 router.get("/mis-publicaciones", authMiddleware, getProductsByUser);
 
