@@ -18,7 +18,7 @@ router.post("/publicar", authMiddleware, postProduct);
 router.get("/mis-publicaciones", authMiddleware, getProductsByUser);
 
 // Rutas de usuario
-router.get("/usuario", authMiddleware, getUser);
+router.get("/perfil", authMiddleware, getUser);
 
 // Rutas de contacto
 router.post("/contacto", postContact);
