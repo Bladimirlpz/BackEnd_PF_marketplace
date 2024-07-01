@@ -1,14 +1,23 @@
 require("dotenv").config({ path: "../.env" });
+const { error } = require("console");
 const { Pool } = require("pg");
 
 const pool = new Pool({
   connectionString: process.env.DB_CONNECTION,
-  ssl:true,
+  ssl: true,
   host: process.env.HOST,
   password: process.env.PASSWORD,
   user: process.env.USER,
   database: process.env.DATABASE,
   allowExitOnIdle: true,
+});
+
+pool.connect((error) => {
+  if (error) {
+    throw new Error(error);
+  } else {
+    console.log("DB conectada");
+  }
 });
 
 module.exports = pool;
