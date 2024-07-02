@@ -3,11 +3,12 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 const loginUser = async (req, res) => {
-  const { email, contraseña } = req.body;
+  const { contrasena,email } = req.body;
+  console.log(req.body)
   try {
     const user = await getUserByEmail(email);
     const { contrasena: contraseñaEncriptada } = user[0];
-    const contraseñaCorrecta = bcrypt.compareSync(contraseña, contraseñaEncriptada);
+    const contraseñaCorrecta = bcrypt.compareSync(contrasena, contraseñaEncriptada);
     if (!contraseñaCorrecta) throw new Error("Contraseña incorrecta");
 
     const token = jwt.sign(
@@ -30,6 +31,7 @@ const loginUser = async (req, res) => {
 const registerUser = async (req, res) => {
   try {
     const user = req.body;
+    console.log(req.body)
     await createUser(user);
     res.status(201).json({ message: "Usuario registrado con exito" });
   } catch (error) {
