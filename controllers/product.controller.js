@@ -1,4 +1,4 @@
-const { obtenerProductos, publicarProducto, productosPublicado } = require("../models/index.js");
+const { obtenerProductos, publicarProducto, productosPublicado, eliminarProducto } = require("../models/index.js");
 
 const getProducts = async (req, res) => {
   try {
@@ -29,8 +29,25 @@ const getProductsByUser = async (req, res) => {
   }
 };
 
+const deleteProduct = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const userId = req.user.id;
+    const result = await eliminarProducto(productId, userId);
+
+    if (result) {
+      res.status(200).json({ message: "Producto eliminado con éxito" });
+    } else {
+      res.status(404).json({ message: "Producto no encontrado o no pertenece al usuario" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error al eliminar el producto", error: error.message });
+  }
+};
+
 module.exports = {
   getProducts,
   postProduct,
   getProductsByUser,
+  deleteProduct,
 };

@@ -68,6 +68,14 @@ const registrarPedido = async (pedidos, id) => {
   }
 };
 
+// Función para eliminar un producto
+const eliminarProducto = async (productId, userId) => {
+  const values = [productId, userId];
+  const query = "DELETE FROM Productos WHERE id = $1 AND usuario_id = $2 RETURNING *;";
+  const { rowCount } = await pool.query(query, values);
+  return rowCount > 0;
+};
+
 module.exports = {
   getUserByEmail,
   createUser,
@@ -77,4 +85,5 @@ module.exports = {
   productosPublicado,
   contactoUsuario,
   registrarPedido,
+  eliminarProducto, // Exportar la nueva función
 };
