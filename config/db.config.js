@@ -8,7 +8,7 @@ const pool = new Pool({
   //password: process.env.PASSWORD,
   //user: process.env.USER,
   //database: process.env.DATABASE,
-  //: true,
+  //allowExitOnIdle: true,
 });
 
 pool.connect((error) => {

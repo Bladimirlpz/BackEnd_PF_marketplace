@@ -42,8 +42,8 @@ CREATE TABLE productos_en_carrito (
     producto_id INT,
     cantidad INT,
     PRIMARY KEY (carrito_id, producto_id),
-    FOREIGN KEY (carrito_id) REFERENCES carritos(id),
-    FOREIGN KEY (producto_id) REFERENCES productos(id)
+    FOREIGN KEY (carrito_id) REFERENCES carrito(id) ON DELETE CASCADE,
+    FOREIGN KEY (producto_id) REFERENCES Productos(id) ON DELETE CASCADE
 );
 
 -- Creacion de la tabla para contactos
